@@ -34,6 +34,7 @@ export default function Banner() {
       }}
       className="w-full h-[600px] relative z-1"
     >
+      {/* byme */}
       {slides.map((slide, index) => (
         <SwiperSlide key={index}>
           <div
