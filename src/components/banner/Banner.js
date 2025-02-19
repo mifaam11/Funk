@@ -43,7 +43,7 @@ export default function Banner() {
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
             {/* Banner Content */}
-            <div className="relative z-10 container mx-auto h-full flex flex-col justify-center px-8 text-white">
+            <div className="relative z-10 container mx-auto h-full flex flex-col justify-center px-8 text-white w-[90%] mx-auto">
               <h1 className="text-5xl md:text-6xl font-bold mb-4">
                 Premium Agriculture Equipments in India
               </h1>

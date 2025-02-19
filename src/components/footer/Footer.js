@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-10 px-5">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-[#1F2B31] text-white py-10 px-10">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 w-[90%]">
         {/* Company Info */}
         <div className="text-center md:text-left">
           <h1 className="text-2xl font-bold mb-4">AgriCrown</h1>

@@ -1,8 +1,8 @@
-import About from '@/components/about/About'
+import About from '@/components/sections/about/About'
 import Banner from '@/components/banner/Banner'
-import Offer from '@/components/offer/Offer'
-import Blogsection from '@/components/section/Blogsection'
-import SubscribeSection from '@/components/section/SubscribeSection'
+import Offer from '@/components/sections/offer/Offer'
+import Blogsection from '@/components/sections/Blogsection'
+import SubscribeSection from '@/components/sections/SubscribeSection'
 import React from 'react'
 
 export default function page() {
