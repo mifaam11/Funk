@@ -1,31 +1,47 @@
-import React from "react";
+import React from 'react';
+import Image from 'next/image';
 
-const Card = ({ image, date, title, description }) => {
+const Card = ({ title, brand = 'Funk', image, price, stockLeft = 12, isNew = true }) => {
     return (
-        <div className="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white transition-transform hover:scale-105 cursor-pointer">
-            <div className="relative">
-                {/* Blog Image */}
-                <img src={image} alt={title} className="w-full h-60 object-cover rounded-2xl" />
+        <div className="w-full max-w-[280px] bg-white border rounded-xl shadow-sm flex-shrink-0 hover:shadow-md transition-shadow duration-300">
+            {/* Image Container */}
+            <div className="relative w-full aspect-[3/4] rounded-t-xl overflow-hidden">
+                <Image
+                    src={image}
+                    alt={title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                />
 
-                {/* Date Badge */}
-                <div className="absolute bottom-4 left-4 bg-orange-200 px-3 py-1 text-sm rounded-lg font-medium">
-                    {date}
-                </div>
-
-                {/* Arrow Button */}
-                <button className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100">
-                    {/* Custom SVG Arrow Icon */}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
+                {/* New Arrival Badge */}
+                {isNew && (
+                    <div className="absolute top-3 left-3 bg-cyan-500 text-white text-xs px-2 py-1 rounded-md font-medium">
+                        • New Arrival
+                    </div>
+                )}
             </div>
 
-            {/* Content */}
-            <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
-                <p className="text-gray-600 text-sm mt-1">{description}</p>
+            {/* Content Container */}
+            <div className="p-3">
+                {/* Brand */}
+                <p className="text-xs text-gray-400">{brand}</p>
+
+                {/* Title */}
+                <h3 className="text-sm font-semibold line-clamp-2 mb-1">{title}</h3>
+
+                {/* Price */}
+                <p className="text-sky-600 font-semibold text-sm mb-1">
+                    SAR {price.toLocaleString()}
+                </p>
+
+                {/* Stock Left */}
+                <p className="text-xs text-red-500 font-medium">
+                    {stockLeft} items left!
+                </p>
             </div>
+
+
         </div>
     );
 };

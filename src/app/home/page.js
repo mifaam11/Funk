@@ -1,22 +1,18 @@
-import About from '@/components/sections/about/About'
-import Banner from '@/components/banner/Banner'
-import Offer from '@/components/sections/offer/Offer'
-import Blogsection from '@/components/sections/Blogsection'
-import SubscribeSection from '@/components/sections/SubscribeSection'
 import React from 'react'
+import Banner from '@/components/banner/Banner'
+import NewArrival from '@/components/sections/NewArrival'
+// import ExploreCollection from '@/components/sections/ExploreCollection'
+import FlashSale from '@/components/flashsale/FlashSale'
 
 export default function page() {
   return (
     <>
-      <div className=''>
 
-        <Banner />
-        <About />
-        <Offer />
-        <Blogsection />
-        <SubscribeSection />
+      <Banner />
+      <FlashSale />
+      <NewArrival />
+      {/* <ExploreCollection /> */}
 
-      </div>
     </>
   )
 }

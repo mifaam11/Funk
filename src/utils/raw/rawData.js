@@ -1,10 +1,10 @@
 export const products = [
-    { id: 1, name: "Luxury Watch", price: "$250", description: 'Detailed description of Product 1', img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 2, name: "Sneakers", price: "$120", description: 'Detailed description of Product 2', img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 3, name: "Headphones", price: "$180", description: 'Detailed description of Product 3', img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 4, name: "Headphones", price: "$180", description: 'Detailed description of Product 4', img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 5, name: "Headphones", price: "$180", description: 'Detailed description of Product 5', img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 6, name: "Headphones", price: "$180", description: 'Detailed description of Product 6', img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { id: 1, name: "Luxury Watch", price: "250", originalPrice: "500", description: 'Detailed description of Product 1', img: "https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600" },
+    { id: 2, name: "Sneakers", price: "120", description: 'Detailed description of Product 2', img: "https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600" },
+    { id: 3, name: "Headphones", price: "180", description: 'Detailed description of Product 3', img: "https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600" },
+    { id: 4, name: "Headphones", price: "180", description: 'Detailed description of Product 4', img: "https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600" },
+    { id: 5, name: "Headphones", price: "180", description: 'Detailed description of Product 5', img: "https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600" },
+    { id: 6, name: "Headphones", price: "180", description: 'Detailed description of Product 6', img: "https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600" },
 ];
 
 export const blogPosts = [
