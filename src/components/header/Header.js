@@ -80,7 +80,7 @@ export default function Header() {
               onMouseEnter={() => setProductSubmenuOpen(true)}
             >
               <Link
-                href="/products"
+                href="#"
                 className="hover:text-black flex items-center gap-1 font-medium text-gray-600"
               >
                 Products ▼
@@ -115,8 +115,8 @@ export default function Header() {
               </div>
             </div>
 
-            <Link href="/new-arrivals" className="hover:text-black">New arrivals</Link>
-            <Link href="/contact" className="hover:text-black">Contact us</Link>
+            <Link href="/products" className="hover:text-black">New arrivals</Link>
+            <Link href="/contact-us" className="hover:text-black">Contact us</Link>
           </nav>
         </div>
 
@@ -186,8 +186,8 @@ export default function Header() {
               <span className="text-black">Products</span>
               <span>→</span>
             </button>
-            <Link href="/new-arrivals" onClick={closeAllMenus}>New Arrivals</Link>
-            <Link href="/contact" onClick={closeAllMenus}>Contact Us</Link>
+            <Link href="/products" onClick={closeAllMenus}>New Arrivals</Link>
+            <Link href="/contact-us" onClick={closeAllMenus}>Contact Us</Link>
           </nav>
         </div>
 
