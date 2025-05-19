@@ -21,7 +21,6 @@ export default function LoginPage() {
             console.log('Logging in:', formData);
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1500));
-            // Handle successful login
         } catch (error) {
             console.error('Login error:', error);
         } finally {
@@ -41,20 +40,20 @@ export default function LoginPage() {
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             </Head>
 
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-50 p-4 sm:p-6 lg:p-8">
+            {/* Top padding added below for fixed header space */}
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-50 p-4 sm:p-6 lg:p-16 pt-16">
                 <div className="w-full max-w-md bg-white rounded-2xl shadow-sm p-6 sm:p-8 md:shadow-md transition-all duration-300 transform hover:shadow-lg">
+
                     {/* Header */}
                     <div className="text-center">
                         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Welcome back</h1>
-                        <p className="text-sm sm:text-base text-gray-600">
-                            Log in to your account to continue
-                        </p>
+                        <p className="text-sm sm:text-base text-gray-600">Log in to your account to continue</p>
                     </div>
 
                     {/* Illustration */}
                     <div className="flex justify-center my-5 sm:my-7">
                         <img
-                            src="/auth-illustration.png" // Replace with your actual image path
+                            src="/auth-illustration.png"
                             alt="Login Illustration"
                             className="w-36 h-36 sm:w-44 sm:h-44 object-contain transition-transform duration-300 hover:scale-105"
                             loading="lazy"
@@ -65,9 +64,7 @@ export default function LoginPage() {
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Phone Number Field */}
                         <div className="space-y-2">
-                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                Phone Number
-                            </label>
+                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <FiPhone className="h-5 w-5 text-gray-400" />
@@ -90,9 +87,7 @@ export default function LoginPage() {
                         {/* Password Field */}
                         <div className="space-y-2">
                             <div className="flex justify-between items-center">
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                    Password
-                                </label>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                                 <Link
                                     href="/forgot-password"
                                     className="text-xs sm:text-sm text-blue-600 hover:text-blue-500 hover:underline transition-colors duration-200"

@@ -2,15 +2,15 @@ import React from 'react'
 
 export default function Contactform() {
     return (
-        <div className='bg-[#f4f7fe]'>
+        <div className='pt-10 bg-[#f4f7fe]'>
 
             <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-[#F4F7FE] p-6 md:p-12 w-11/12 mx-auto">
                 {/* Left Section - Contact Info */}
                 <div className="w-full md:w-1/2 space-y-6">
                     <h1 className="text-5xl font-bold text-black">Contact Us</h1>
-                    <p className="text-gray-700 text-lg">Email, call, or complete the form to learn how AgriCrown can solve your messaging problem.</p>
-                    <p className="text-lg font-medium text-black">info@sAgricrown.com</p>
-                    <p className="text-lg font-medium text-black">9756596361</p>
+                    <p className="text-gray-700 text-lg">Email, call, or complete the form to learn how Funk can solve your messaging problem.</p>
+                    <p className="text-lg font-medium text-black">info@funk.com</p>
+                    <p className="text-lg font-medium text-black"></p>
                     <a href="#" className="text-blue-600 underline font-medium">Customer Support</a>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-800 mt-6">

@@ -64,7 +64,7 @@ export default function Banner() {
 
   return (
     <section className="relative">
-      <div className="pt-16 md:pt-8 pb-10">
+      <div className="md:pt-8 pb-10">
         <style>
           {`
             .custom-dots li.slick-active div {
