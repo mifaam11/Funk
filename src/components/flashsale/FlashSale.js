@@ -1,63 +1,43 @@
 'use client';
+
 import React, { useRef, useEffect, useState } from 'react';
 import Card from '../card/Card';
-
-const flashSaleItems = [
-    {
-        title: "EliteShield Performance Men's Jackets",
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 255000,
-        originalPrice: 525000,
-        sold: 9,
-        total: 10,
-    },
-    {
-        title: "Gentlemen's Summer Gray Hat - Premium Blend",
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 99000,
-        originalPrice: 150000,
-        sold: 9,
-        total: 10,
-    },
-    {
-        title: 'OptiZoom Camera Shoulder Bag',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 250000,
-        originalPrice: 425000,
-        sold: 5,
-        total: 10,
-    },
-    {
-        title: 'Cloudy Chic - Grey Peep Toe Heeled Sandals',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 270000,
-        originalPrice: 580000,
-        sold: 5,
-        total: 10,
-    },
-    {
-        title: 'Premium Leather Wallet with RFID Protection',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 120000,
-        originalPrice: 200000,
-        sold: 7,
-        total: 10,
-    },
-    {
-        title: 'Wireless Noise Cancelling Headphones',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 450000,
-        originalPrice: 750000,
-        sold: 3,
-        total: 10,
-    },
-];
+import { getData } from '@/utils/api';
 
 export default function FlashSale() {
     const scrollRef = useRef(null);
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [showControls, setShowControls] = useState(false);
     const [isAtStart, setIsAtStart] = useState(true);
     const [isAtEnd, setIsAtEnd] = useState(false);
+    const [timeLeft, setTimeLeft] = useState({
+        hours: 12,
+        minutes: 34,
+        seconds: 56
+    });
+
+    // Countdown timer effect
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft(prev => {
+                const { hours, minutes, seconds } = prev;
+
+                if (seconds > 0) {
+                    return { ...prev, seconds: seconds - 1 };
+                } else if (minutes > 0) {
+                    return { hours, minutes: minutes - 1, seconds: 59 };
+                } else if (hours > 0) {
+                    return { hours: hours - 1, minutes: 59, seconds: 59 };
+                } else {
+                    clearInterval(timer);
+                    return { hours: 0, minutes: 0, seconds: 0 };
+                }
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
 
     const checkScrollPosition = () => {
         if (scrollRef.current) {
@@ -83,6 +63,23 @@ export default function FlashSale() {
         };
     }, []);
 
+    useEffect(() => {
+        async function fetchFlashSaleItems() {
+            try {
+                setIsLoading(true);
+                const data = await getData("/");
+                const flashItems = data.slice(0, 6);
+                setProducts(flashItems);
+            } catch (err) {
+                console.error("Failed to load flash sale products", err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchFlashSaleItems();
+    }, []);
+
     const scrollLeft = () => {
         if (scrollRef.current) {
             const cardWidth = scrollRef.current.firstChild?.clientWidth || 300;
@@ -98,54 +95,114 @@ export default function FlashSale() {
     };
 
     return (
-        <section className="py-6 md:py-10 bg-gray-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-6 gap-4">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <span className="text-2xl">⚡</span>
-                        <h2 className="text-xl font-semibold truncate">Flash Sale</h2>
+        <section className="py-8 md:py-12 bg-gradient-to-b from-gray-50 to-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header - Now always in one line */}
+                <div className="flex items-center justify-between mb-6 md:mb-8 gap-4">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <div className="relative flex-shrink-0">
+                            <span className="text-3xl animate-pulse">⚡</span>
+                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+                        </div>
+                        <div className="min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">Flash Sale</h2>
+                                <div className="flex items-center gap-1">
+                                    <span className="hidden xs:inline text-xs font-medium text-gray-500 whitespace-nowrap">Ends in:</span>
+                                    <div className="flex gap-1">
+                                        <span className="bg-gray-900 text-white text-xs font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
+                                            {String(timeLeft.hours).padStart(2, '0')}h
+                                        </span>
+                                        <span className="bg-gray-900 text-white text-xs font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
+                                            {String(timeLeft.minutes).padStart(2, '0')}m
+                                        </span>
+                                        <span className="bg-gray-900 text-white text-xs font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
+                                            {String(timeLeft.seconds).padStart(2, '0')}s
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {showControls && (
-                        <div className="flex gap-2 flex-shrink-0 ml-4">
+                        <div className="flex gap-2 flex-shrink-0">
                             <button
                                 onClick={scrollLeft}
                                 disabled={isAtStart}
-                                className={`w-8 h-8 md:w-9 md:h-9 rounded border flex items-center justify-center text-lg md:text-xl transition ${isAtStart
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                        : 'bg-white hover:bg-gray-100'
+                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-lg transition-all duration-300 ${isAtStart
+                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    : 'bg-white text-gray-800 shadow-md hover:bg-gray-50 hover:shadow-lg'
                                     }`}
                                 aria-label="Scroll left"
                             >
-                                ←
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
                             </button>
                             <button
                                 onClick={scrollRight}
                                 disabled={isAtEnd}
-                                className={`w-8 h-8 md:w-9 md:h-9 rounded flex items-center justify-center text-lg md:text-xl transition ${isAtEnd
-                                        ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                        : 'bg-black text-white hover:bg-gray-800'
+                                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-lg transition-all duration-300 ${isAtEnd
+                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                    : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md hover:shadow-lg hover:from-blue-700 hover:to-purple-700'
                                     }`}
                                 aria-label="Scroll right"
                             >
-                                →
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                </svg>
                             </button>
                         </div>
                     )}
                 </div>
 
-                {/* Cards */}
+                {/* Cards or Loader */}
                 <div
                     ref={scrollRef}
-                    className="flex gap-3 sm:gap-4 overflow-x-auto hide-scrollbar scroll-smooth pb-2"
+                    className="flex gap-4 sm:gap-6 overflow-x-auto hide-scrollbar scroll-smooth pb-6"
                 >
-                    {flashSaleItems.map((item, index) => (
-                        <div key={index} className="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64">
-                            <Card {...item} />
-                        </div>
-                    ))}
+                    {isLoading ? (
+                        Array.from({ length: 6 }).map((_, index) => (
+                            <div
+                                key={index}
+                                className="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 animate-pulse p-4"
+                            >
+                                <div className="h-32 sm:h-40 bg-gray-200 rounded-lg mb-4" />
+                                <div className="h-4 bg-gray-200 rounded mb-3 w-3/4" />
+                                <div className="h-4 bg-gray-200 rounded w-1/2 mb-4" />
+                                <div className="h-8 bg-gray-300 rounded-lg" />
+                            </div>
+                        ))
+                    ) : (
+                        products.map((item, index) => (
+                            <div
+                                key={item._id || index}
+                                className="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64 transform transition-all duration-300 hover:-translate-y-1"
+                            >
+                                <Card
+                                    title={item.name}
+                                    image={item.image}
+                                    price={item.price}
+                                    originalPrice={item.price * 1.2}
+                                    stockLeft={item.stock}
+                                    isNew={false}
+                                    brand={false}
+                                    flashSale
+                                />
+                            </div>
+                        ))
+                    )}
                 </div>
+
+                {/* View All Button - Only shown when there are items */}
+                {products.length > 0 && (
+                    <div className="text-center mt-4">
+                        <button className="px-5 py-1.5 text-sm sm:px-6 sm:py-2 sm:text-base bg-white border border-gray-300 text-gray-800 font-medium rounded-full hover:bg-gray-50 transition-colors duration-300 shadow-sm hover:shadow-md">
+                            View All Flash Deals
+                        </button>
+                    </div>
+                )}
             </div>
 
             <style jsx>{`

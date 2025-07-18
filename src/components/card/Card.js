@@ -32,7 +32,7 @@ const Card = ({ title, brand = 'Funk', image, price, stockLeft = 12, isNew = tru
 
                 {/* Price */}
                 <p className="text-sky-600 font-semibold text-sm mb-1">
-                    SAR {price.toLocaleString()}
+                    ₹ {price.toLocaleString()}
                 </p>
 
                 {/* Stock Left */}

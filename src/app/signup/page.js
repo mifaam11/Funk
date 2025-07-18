@@ -1,174 +1,193 @@
 'use client';
-import React, { useState } from 'react';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import { FaFacebookF, FaGoogle, FaArrowRight } from 'react-icons/fa';
-import { FiSmartphone } from 'react-icons/fi';
-import Link from 'next/link';
-import Head from 'next/head';
 
-const Signup = () => {
-    const [phone, setPhone] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
 
-    const handleSubmit = (e) => {
+export default function SignupPage() {
+    const router = useRouter();
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+    });
+    const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleChange = (e) => {
+        setFormData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitting(true);
-        console.log('Phone submitted:', phone);
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
-        }, 1500);
+        setIsLoading(true);
+        setError('');
+
+        try {
+            // Form validation
+            if (!formData.name.trim()) {
+                setError('Please enter your full name');
+                return;
+            }
+            if (!formData.email.trim()) {
+                setError('Please enter your email address');
+                return;
+            }
+            if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+                setError('Please enter a valid email address');
+                return;
+            }
+            if (formData.password.length < 8) {
+                setError('Password must be at least 8 characters');
+                return;
+            }
+
+            await new Promise(res => setTimeout(res, 1000)); // simulate API
+            router.push('/login');
+        } catch (err) {
+            setError(err.message || 'Something went wrong. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
-        <>
-            <Head>
-                <title>Sign Up | Your App Name</title>
-                <meta name="description" content="Create your account" />
-                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-            </Head>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50 p-4 sm:p-6">
+            <div className="bg-white rounded-xl shadow-lg w-full max-w-md overflow-hidden transition-all duration-300 hover:shadow-xl">
+                {/* Header with gradient */}
+                <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-center">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-white">Join Funk</h1>
+                    <p className="text-blue-100 mt-2 text-sm sm:text-base">
+                        Create your account to start your fashion journey
+                    </p>
+                </div>
 
-            <div className="min-h-screen flex flex-col">
-                {/* Header */}
-                {/* <header className="bg-white shadow-sm py-4 px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-7xl mx-auto flex justify-between items-center">
-                        <Link href="/" className="text-xl font-bold text-indigo-600">
-                            YourLogo
-                        </Link>
-                        <Link
-                            href="/login"
-                            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                            Sign In
-                        </Link>
-                    </div>
-                </header> */}
-
-                {/* Main Content */}
-                <main className="flex-grow flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-16 sm:px-6 lg:px-4 transition-colors duration-300">
-                    <div className="w-full max-w-md space-y-8">
-                        <div className="text-center">
-                            <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mb-4">
-                                <FiSmartphone className="h-8 w-8 text-indigo-600" />
-                            </div>
-                            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                                Create Your Account
-                            </h2>
-                            <p className="mt-3 text-sm text-gray-600 sm:text-base">
-                                Enter your phone number to get started
-                            </p>
-                        </div>
-
-                        <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 space-y-6">
-                            {/* Phone Input */}
-                            <div className="space-y-3">
-                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 sm:text-base">
-                                    Phone Number
-                                </label>
-                                <PhoneInput
-                                    country={'in'}
-                                    value={phone}
-                                    onChange={setPhone}
-                                    inputStyle={{
-                                        width: '100%',
-                                        height: '48px',
-                                        borderRadius: '12px',
-                                        fontSize: '16px',
-                                        borderColor: '#D1D5DB',
-                                        transition: 'all 0.2s ease'
-                                    }}
-                                    containerStyle={{
-                                        borderRadius: '12px',
-                                        width: '100%'
-                                    }}
-                                    inputClass="focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-gray-400"
-                                    buttonClass="hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 rounded-l-lg"
-                                    dropdownClass="rounded-xl shadow-lg border border-gray-200"
-                                    dropdownStyle={{
-                                        borderRadius: '12px',
-                                        marginTop: '8px'
-                                    }}
-                                    enableSearch
-                                    searchPlaceholder="Search country"
-                                    searchClass="p-2 border-b border-gray-200 focus:ring-2 focus:ring-indigo-500"
-                                    placeholder="+91 12345 67890"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">
-                                    We'll send a verification code to this number
-                                </p>
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                className={`group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white ${isSubmitting ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:shadow-md`}
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Processing...
-                                    </>
-                                ) : (
-                                    <>
-                                        Continue
-                                        <FaArrowRight className="ml-2 opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-1" />
-                                    </>
-                                )}
-                            </button>
-
+                {/* Form container */}
+                <div className="p-6 sm:p-8">
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        {/* Name field */}
+                        <div className="space-y-1">
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                Full Name
+                            </label>
                             <div className="relative">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-gray-300" />
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                    <FiUser className="h-5 w-5" />
                                 </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-white text-gray-500">or sign up with</span>
-                                </div>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="John Doe"
+                                    className="block w-full pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-200"
+                                />
                             </div>
-
-                            {/* Social Logins */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    type="button"
-                                    className="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-xl bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:-translate-y-0.5"
-                                >
-                                    <FaFacebookF className="text-blue-600 mr-2 text-lg" />
-                                    <span className="hidden sm:inline">Facebook</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    className="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-300 rounded-xl bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 hover:-translate-y-0.5"
-                                >
-                                    <FaGoogle className="text-red-500 mr-2 text-lg" />
-                                    <span className="hidden sm:inline">Google</span>
-                                </button>
-                            </div>
-                        </form>
-
-                        <div className="text-center text-sm text-gray-600">
-                            <p>
-                                Already have an account?{' '}
-                                <Link
-                                    href="/login"
-                                    className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline transition-colors duration-200"
-                                >
-                                    Log In
-                                </Link>
-                            </p>
-                            <p className="mt-2 text-xs text-gray-500">
-                                By signing up, you agree to our{' '}
-                                <Link href="/terms" className="text-indigo-500 hover:underline">Terms</Link> and{' '}
-                                <Link href="/privacy" className="text-indigo-500 hover:underline">Privacy Policy</Link>
-                            </p>
                         </div>
-                    </div>
-                </main>
-            </div>
-        </>
-    );
-};
 
-export default Signup;
+                        {/* Email field */}
+                        <div className="space-y-1">
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email Address
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                    <FiMail className="h-5 w-5" />
+                                </div>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="you@example.com"
+                                    className="block w-full pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-200"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Password field */}
+                        <div className="space-y-1">
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                Password
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                    <FiLock className="h-5 w-5" />
+                                </div>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                    minLength="8"
+                                    placeholder="••••••••"
+                                    className="block w-full pl-10 pr-10 py-2.5 sm:py-3 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800 placeholder-gray-400 transition-all duration-200"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                                    onClick={() => setShowPassword(prev => !prev)}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <FiEyeOff className="h-5 w-5" /> : <FiEye className="h-5 w-5" />}
+                                </button>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">Minimum 8 characters</p>
+                        </div>
+
+                        {/* Error message */}
+                        {error && (
+                            <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg border border-red-100">
+                                {error}
+                            </div>
+                        )}
+
+                        {/* Submit button */}
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm sm:text-base font-medium text-white ${isLoading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-[1.01]`}
+                        >
+                            {isLoading ? (
+                                <span className="flex items-center">
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Creating account...
+                                </span>
+                            ) : (
+                                <span className="flex items-center">
+                                    Sign Up <FiArrowRight className="ml-2 transition-transform duration-200 group-hover:translate-x-1" />
+                                </span>
+                            )}
+                        </button>
+                    </form>
+
+                    {/* Footer links */}
+                    <div className="mt-6 text-center text-sm text-gray-600">
+                        <p>
+                            Already have an account?{' '}
+                            <a
+                                href="/login"
+                                className="font-medium text-blue-600 hover:text-blue-500 hover:underline transition-colors duration-200"
+                            >
+                                Log in
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

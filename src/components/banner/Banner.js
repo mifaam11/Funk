@@ -1,128 +1,90 @@
 'use client';
-import React from 'react';
-import Slider from 'react-slick';
+
 import Image from 'next/image';
-import Link from 'next/link';
+import model from '@/assets/model.png';
+import { motion } from 'framer-motion';
 
-const slides = [
-  {
-    title: 'Baggy Pants',
-    description: 'Latte Beige scar unisex Baggy pants',
-    image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-    link: '/products/baggy-pants',
-  },
-  {
-    title: 'Casual Hoodie',
-    description: 'Comfy & cozy for every season',
-    image: 'https://genrage.com/cdn/shop/files/63.png?v=1744986794&width=600',
-    link: '/products/casual-hoodie',
-  },
-  {
-    title: 'Streetwear Tee',
-    description: 'Graphic tee for urban vibes',
-    image: 'https://genrage.com/cdn/shop/files/54.png?v=1744986815&width=600',
-    link: '/products/streetwear-tee',
-  },
-  {
-    title: 'Cargo Joggers',
-    description: 'Utility meets comfort',
-    image: 'https://genrage.com/cdn/shop/files/60.png?v=1744986852&width=600',
-    link: '/products/cargo-joggers',
-  },
-];
-
-export default function Banner() {
-  const settings = {
-    dots: true,
-    arrows: false,
-    infinite: true,
-    speed: 500,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    appendDots: dots => (
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '16px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <ul className="custom-dots">{dots}</ul>
-      </div>
-    ),
-    customPaging: function () {
-      return (
-        <div className="w-[10px] h-[10px] rounded-full bg-[rgba(255,255,255,0.4)] transition-all duration-300" />
-      );
-    },
-  };
-
+export default function HeroSection() {
   return (
-    <section className="relative">
-      <div className="md:pt-8 pb-10">
-        <style>
-          {`
-            .custom-dots li.slick-active div {
-              background-color: white !important;
-            }
-            .image-container {
-              position: relative;
-              width: 100%;
-              height: 180px;
-            }
-            @media (min-width: 640px) {
-              .image-container {
-                height: 220px;
-              }
-            }
-            @media (min-width: 768px) {
-              .image-container {
-                height: 300px;
-              }
-            }
-          `}
-        </style>
+    <section className="relative bg-gray-900 text-white h-screen flex flex-col lg:flex-row items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 overflow-hidden pt-20">
+      {/* Gradient Background Stripe */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-20 z-0" />
 
-        <Slider {...settings}>
-          {slides.map((slide, index) => (
-            <div key={index}>
-              <div className="px-4 sm:px-6 md:px-0">
-                <div className="bg-[#5c74e6] text-white shadow-lg px-4 py-6 sm:px-6 sm:py-10 md:py-12 flex flex-row items-center justify-between gap-6 sm:gap-8 rounded-xl md:rounded-none">
-                  {/* Text Section - Always on left */}
-                  <div className="flex-1 w-full md:w-auto text-left px-2 sm:px-4 md:px-6">
-                    <h2 className="text-lg sm:text-xl md:text-3xl font-bold mb-2">{slide.title}</h2>
-                    <p className="text-xs sm:text-sm md:text-base text-white/90">{slide.description}</p>
-                    <Link
-                      href={slide.link}
-                      className="inline-block mt-4 sm:mt-6 md:mt-10 px-4 py-2 bg-white text-black text-xs sm:text-sm font-medium rounded-full hover:bg-gray-100 transition"
-                    >
-                      Shop Now
-                    </Link>
-                  </div>
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gray-900/90 z-0" />
 
-                  {/* Image Section - Always on right */}
-                  <div className="flex-1 w-full md:w-auto max-w-[320px] sm:max-w-[400px] md:max-w-[500px] mx-auto md:mx-0">
-                    <div className="image-container">
-                      <Image
-                        src={slide.image}
-                        alt={slide.title}
-                        fill
-                        className="object-contain"
-                        priority
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </Slider>
+      {/* Left Content */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="z-20 max-w-md lg:max-w-xl space-y-6 md:space-y-8 text-center lg:text-left mb-10 lg:mb-0"
+      >
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight text-white">
+          <span className="text-white">
+            GEAR UP FOR
+          </span>
+          <br className="hidden sm:block" />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-300">GREATNESS</span>.
+        </h1>
+        <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed">
+          Premium performance wear engineered for athletes.
+          <motion.span
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ repeat: Infinity, repeatType: "reverse", duration: 1.5 }}
+            className="inline-block mt-2 px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-sm sm:text-base shadow-lg shadow-purple-500/30"
+          >
+            25% OFF NEW COLLECTION
+          </motion.span>
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.4)"
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-bold transition-all shadow-lg hover:shadow-blue-500/40"
+          >
+            SHOP NOW
+          </motion.button>
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              background: "linear-gradient(to right, rgba(37, 99, 235, 0.1), rgba(168, 85, 247, 0.1))",
+              boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.3)"
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="border-2 border-white/80 text-white hover:border-white px-6 py-3 rounded-lg font-bold transition-all shadow-lg hover:shadow-purple-500/20"
+          >
+            EXPLORE COLLECTION
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* Right Side Image */}
+      <div className="relative w-full lg:w-[55%] h-[50vh] sm:h-[70vh] lg:h-full flex items-end justify-center">
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-gray-900/80 via-gray-900/30 to-transparent z-10" />
+
+        {/* Model Image */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative w-full h-full"
+        >
+          <Image
+            src={model}
+            alt="Fitness Model"
+            fill
+            priority
+            quality={100}
+            className="object-contain object-bottom lg:object-right-bottom"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 55vw"
+          />
+        </motion.div>
       </div>
     </section>
   );
