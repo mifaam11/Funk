@@ -28,7 +28,7 @@ const Card = ({ title, brand = 'Funk', image, price, stockLeft = 12, isNew = tru
                 <p className="text-xs text-gray-400">{brand}</p>
 
                 {/* Title */}
-                <h3 className="text-sm font-semibold line-clamp-2 mb-1">{title}</h3>
+                <h3 className="text-sm font-semibold truncate mb-1">{title}</h3>
 
                 {/* Price */}
                 <p className="text-sky-600 font-semibold text-sm mb-1">
@@ -40,8 +40,6 @@ const Card = ({ title, brand = 'Funk', image, price, stockLeft = 12, isNew = tru
                     {stockLeft} items left!
                 </p>
             </div>
-
-
         </div>
     );
 };

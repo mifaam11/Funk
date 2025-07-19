@@ -17,7 +17,6 @@ export default function FlashSale() {
         seconds: 56
     });
 
-    // Countdown timer effect
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(prev => {
@@ -68,7 +67,7 @@ export default function FlashSale() {
             try {
                 setIsLoading(true);
                 const data = await getData("/");
-                const flashItems = data.slice(0, 6);
+                const flashItems = data.filter(item => item.status === 'flash-sale');
                 setProducts(flashItems);
             } catch (err) {
                 console.error("Failed to load flash sale products", err);
@@ -94,10 +93,12 @@ export default function FlashSale() {
         }
     };
 
+    // ❗ Hide entire section if loading OR no flash sale items
+    if (isLoading || products.length === 0) return null;
+
     return (
         <section className="py-8 md:py-12 bg-gradient-to-b from-gray-50 to-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Header - Now always in one line */}
                 <div className="flex items-center justify-between mb-6 md:mb-8 gap-4">
                     <div className="flex items-center gap-3 min-w-0">
                         <div className="relative flex-shrink-0">
@@ -157,52 +158,28 @@ export default function FlashSale() {
                     )}
                 </div>
 
-                {/* Cards or Loader */}
                 <div
                     ref={scrollRef}
                     className="flex gap-4 sm:gap-6 overflow-x-auto hide-scrollbar scroll-smooth pb-6"
                 >
-                    {isLoading ? (
-                        Array.from({ length: 6 }).map((_, index) => (
-                            <div
-                                key={index}
-                                className="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 animate-pulse p-4"
-                            >
-                                <div className="h-32 sm:h-40 bg-gray-200 rounded-lg mb-4" />
-                                <div className="h-4 bg-gray-200 rounded mb-3 w-3/4" />
-                                <div className="h-4 bg-gray-200 rounded w-1/2 mb-4" />
-                                <div className="h-8 bg-gray-300 rounded-lg" />
-                            </div>
-                        ))
-                    ) : (
-                        products.map((item, index) => (
-                            <div
-                                key={item._id || index}
-                                className="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64 transform transition-all duration-300 hover:-translate-y-1"
-                            >
-                                <Card
-                                    title={item.name}
-                                    image={item.image}
-                                    price={item.price}
-                                    originalPrice={item.price * 1.2}
-                                    stockLeft={item.stock}
-                                    isNew={false}
-                                    brand={false}
-                                    flashSale
-                                />
-                            </div>
-                        ))
-                    )}
+                    {products.map((item, index) => (
+                        <div
+                            key={item._id || index}
+                            className="flex-shrink-0 w-40 sm:w-48 md:w-56 lg:w-64 transform transition-all duration-300 hover:-translate-y-1"
+                        >
+                            <Card
+                                title={item.name}
+                                image={item.image}
+                                price={item.price}
+                                originalPrice={item.price * 1.2}
+                                stockLeft={item.stock}
+                                isNew={false}
+                                brand={false}
+                                flashSale
+                            />
+                        </div>
+                    ))}
                 </div>
-
-                {/* View All Button - Only shown when there are items */}
-                {products.length > 0 && (
-                    <div className="text-center mt-4">
-                        <button className="px-5 py-1.5 text-sm sm:px-6 sm:py-2 sm:text-base bg-white border border-gray-300 text-gray-800 font-medium rounded-full hover:bg-gray-50 transition-colors duration-300 shadow-sm hover:shadow-md">
-                            View All Flash Deals
-                        </button>
-                    </div>
-                )}
             </div>
 
             <style jsx>{`

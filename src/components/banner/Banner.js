@@ -25,7 +25,7 @@ export default function HeroSection() {
             GEAR UP FOR
           </span>
           <br className="hidden sm:block" />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-300">GREATNESS</span>.
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-300">GREATNESS.</span>
         </h1>
         <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed">
           Premium performance wear engineered for athletes.
