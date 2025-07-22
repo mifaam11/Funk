@@ -4,73 +4,14 @@ import React, { useState, useEffect } from 'react';
 import NewArrivalCard from '../card/NewArrivalCard';
 import { FiChevronRight } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
-
-const items = [
-    {
-        title: 'Apex Red Unisex Boxy Vest',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 999,
-        originalPrice: 2199,
-    },
-    {
-        title: 'Vedha Black Unisex Straight Baggy Pants',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 1699,
-        originalPrice: 3199,
-    },
-    {
-        title: 'Ghost Boxy Oversized Tshirt',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 1299,
-        originalPrice: 3199,
-    },
-    {
-        title: 'Mutation Unisex Straight Fit Baggy Pants',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 1799,
-        originalPrice: 3199,
-    },
-    {
-        title: 'Samudra Unisex Boxy Vest',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 999,
-        originalPrice: 2199,
-    },
-    {
-        title: 'Dawn Unisex Straight Fit Baggy Pants',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 1699,
-        originalPrice: 3199,
-    },
-    {
-        title: 'Dusk Blue Slim Fit Jeans',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 1899,
-        originalPrice: 3499,
-    },
-    {
-        title: 'Urban Grey Hooded Sweatshirt',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 1499,
-        originalPrice: 2999,
-    },
-    {
-        title: 'Classic White Sneakers',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 2299,
-        originalPrice: 4599,
-    },
-    {
-        title: 'Premium Leather Backpack',
-        image: 'https://genrage.com/cdn/shop/files/72_53f73480-8433-4148-85d7-09682e19f373.png?v=1744986751&width=600',
-        price: 2499,
-        originalPrice: 4999,
-    },
-];
+import { getData } from '@/utils/api';
 
 const NewArrival = () => {
     const router = useRouter();
     const [isMobile, setIsMobile] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -82,8 +23,23 @@ const NewArrival = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getData('/products/new-arrivals');
+                setProducts(data);
+            } catch (err) {
+                console.error('Failed to fetch new arrivals:', err);
+                setError('Failed to load new arrivals.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const handleViewMore = () => {
-        // Redirect to the new arrivals page
         router.push('/products');
     };
 
@@ -98,16 +54,22 @@ const NewArrival = () => {
                     </p>
                 </div>
 
-                {/* Grid Layout - Show all cards */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                    {items.map((item, idx) => (
-                        <div key={idx} className="px-1 sm:px-2">
-                            <NewArrivalCard {...item} />
-                        </div>
-                    ))}
-                </div>
+                {/* Grid Layout */}
+                {loading ? (
+                    <p className="text-center text-gray-500">Loading...</p>
+                ) : error ? (
+                    <p className="text-center text-red-500">{error}</p>
+                ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                        {products.map((item, idx) => (
+                            <div key={item.id || idx} className="px-1 sm:px-2">
+                                <NewArrivalCard {...item} />
+                            </div>
+                        ))}
+                    </div>
+                )}
 
-                {/* View More Button - Always shown and redirects */}
+                {/* View More Button */}
                 <div className="text-center mt-8 md:mt-10">
                     <button
                         onClick={handleViewMore}

@@ -1,76 +1,45 @@
 "use client";
-import React, { useState } from "react";
-import Card from '../card/Card';
-// import ExploreCollectionCard from "../card/ExploreCollectionCard";
 
-const products = [
-    {
-        title: "Classic Denim Jacket",
-        price: "1,999",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Elegant Handbag",
-        price: "2,499",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Smart Casual Shoes",
-        price: "3,299",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-    {
-        title: "Floral Summer Dress",
-        price: "1,599",
-        image: "https://img.freepik.com/free-photo/composition-fathers-day-with-accessories_23-2147790928.jpg",
-    },
-];
+import React, { useEffect, useState } from "react";
+import Card from "../card/Card";
+import { getData } from "@/utils/api";
 
 const ExploreCollection = () => {
+    const [products, setProducts] = useState([]);
     const [visibleProducts, setVisibleProducts] = useState(9);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchProducts() {
+            try {
+                const data = await getData("/");
+                const filtered = data.filter(item => item.status === "products");
+                setProducts(filtered);
+            } catch (error) {
+                console.error("Failed to load explore collection products:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchProducts();
+    }, []);
+
     const showMoreProducts = () => {
         setVisibleProducts(products.length);
     };
+
+    // ✅ Loader while fetching
+    if (isLoading) {
+        return (
+            <section className="py-20 flex justify-center items-center bg-gray-50">
+                <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+            </section>
+        );
+    }
+
+    // ✅ Return nothing if no products found
+    if (products.length === 0) return null;
 
     return (
         <section className="py-16 bg-gray-50">
@@ -89,8 +58,8 @@ const ExploreCollection = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {products.slice(0, visibleProducts).map((item, idx) => (
                         <Card
-                            key={idx}
-                            title={item.title}
+                            key={item._id || idx}
+                            title={item.name}
                             price={item.price}
                             image={item.image}
                         />

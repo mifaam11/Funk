@@ -199,7 +199,7 @@ export default function Header() {
       </header>
 
       {/* Mobile Search Bar – Only on home page with side space */}
-      {pathname === '/' && (
+      {/* {pathname === '/' && (
         <div className="md:hidden pt-16 bg-white px-4">
           <div className="py-2 border-b border-gray-200">
             <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
@@ -220,7 +220,7 @@ export default function Header() {
             </form>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Padding below header */}
       {/* <div className="pt-4 md:pt-16" /> */}
