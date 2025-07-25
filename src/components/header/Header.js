@@ -20,11 +20,17 @@ export default function Header() {
         setSearchOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+
+    if (searchOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [searchOpen]);
 
   useEffect(() => {
     const handleMouseLeave = () => {
@@ -40,7 +46,7 @@ export default function Header() {
   }, []);
 
   const handleSearchToggle = () => {
-    setSearchOpen((prev) => !prev);
+    setSearchOpen(true); // Open only, close handled by outside click or close icon
   };
 
   const closeAllMenus = () => {
@@ -83,20 +89,10 @@ export default function Header() {
                 ref={productsMenuRef}
                 onMouseEnter={() => setProductSubmenuOpen(true)}
               >
-                <Link href="#" className="hover:text-black flex items-center gap-1 font-medium text-gray-600">
-                  Products ▼
+                <Link href="/products" className="hover:text-black flex items-center gap-1 font-medium text-gray-600">
+                  Shop
                 </Link>
-                <div className={`absolute left-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md transition-all duration-200 z-50 ${productSubmenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
-                  <ul className="py-1">
-                    {['pants', 'shirts', 't-shirts', 'lower'].map((item) => (
-                      <li key={item}>
-                        <Link href={`/products/${item}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors capitalize">
-                          {item.replace('-', ' ')}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+
               </div>
               <Link href="/products" className="hover:text-black">New arrivals</Link>
               <Link href="/contact-us" className="hover:text-black">Contact us</Link>
@@ -104,8 +100,8 @@ export default function Header() {
           </div>
 
           {/* Right Icons */}
-          <div className="relative flex items-center gap-5 text-gray-600" ref={searchRef}>
-            <div className="hidden md:block relative">
+          <div className="relative flex items-center gap-5 text-gray-600">
+            <div className="hidden md:block relative" ref={searchRef}>
               <CiSearch
                 size={20}
                 className="cursor-pointer hover:text-black transition-colors duration-200"
@@ -118,7 +114,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Search */}
-        <div className={`hidden md:block fixed inset-x-0 top-[50px] bg-white/80 backdrop-blur-sm z-40 overflow-hidden transition-all duration-300 ease-out ${searchOpen ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div ref={searchRef} className={`hidden md:block fixed inset-x-0 top-[50px] bg-white/80 backdrop-blur-sm z-40 overflow-hidden transition-all duration-300 ease-out ${searchOpen ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-3">
             <input
               type="text"
@@ -127,14 +123,13 @@ export default function Header() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            <CiSearch className="absolute right-16 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" size={22} />
             <button
               onClick={() => setSearchOpen(false)}
               className="text-gray-500 hover:text-black transition-colors duration-200"
               aria-label="Close search"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <FiX className="h-6 w-6" />
             </button>
           </div>
         </div>
@@ -198,32 +193,42 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Search Bar – Only on home page with side space */}
-      {/* {pathname === '/' && (
-        <div className="md:hidden pt-16 bg-white px-4">
-          <div className="py-2 border-b border-gray-200">
-            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+      {/* Mobile Search - Only on homepage */}
+      {pathname === '/' && (
+        <div className="md:hidden bg-white border-b border-gray-200 mt-[55px]">
+          <div className="max-w-7xl mx-auto px-4 py-3">
+            <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
-                placeholder="Search for products..."
-                className="flex-1 text-sm px-4 py-2 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-black"
+                placeholder="Search products..."
+                className="w-full text-sm px-4 py-2 pr-10 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Search products"
               />
-              <button
-                type="submit"
-                className="p-2 text-gray-600 hover:text-black"
-                aria-label="Search"
-              >
-                <CiSearch size={20} />
-              </button>
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <FiX size={18} />
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  className="text-gray-500 hover:text-black transition-colors"
+                  aria-label="Submit search"
+                >
+                  <CiSearch size={18} />
+                </button>
+              </div>
             </form>
           </div>
         </div>
-      )} */}
-
-      {/* Padding below header */}
-      {/* <div className="pt-4 md:pt-16" /> */}
+      )}
     </>
   );
 }
